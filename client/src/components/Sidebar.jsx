@@ -1,121 +1,97 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
-
 import {
-  FaBars,
-  FaHome,
+  FaTachometerAlt,
   FaPills,
-  FaPlusCircle,
   FaChartBar,
   FaRobot,
   FaQrcode,
   FaCog,
+  FaSignOutAlt,
 } from "react-icons/fa";
 
 function Sidebar() {
-
-  const [collapse, setCollapse] = useState(false);
-
-  const menus = [
-
+  const menuItems = [
     {
       title: "Dashboard",
-      icon: <FaHome />,
       path: "/dashboard",
+      icon: <FaTachometerAlt />,
     },
-
     {
       title: "Medicines",
-      icon: <FaPills />,
       path: "/medicines",
+      icon: <FaPills />,
     },
-
-    {
-      title: "Add Medicine",
-      icon: <FaPlusCircle />,
-      path: "/add",
-    },
-
     {
       title: "Reports",
-      icon: <FaChartBar />,
       path: "/reports",
+      icon: <FaChartBar />,
     },
-
     {
       title: "AI Prediction",
-      icon: <FaRobot />,
       path: "/prediction",
+      icon: <FaRobot />,
     },
-
     {
-      title: "QR Codes",
-      icon: <FaQrcode />,
+      title: "QR Code",
       path: "/qrcode",
+      icon: <FaQrcode />,
     },
-
     {
       title: "Settings",
-      icon: <FaCog />,
       path: "/settings",
+      icon: <FaCog />,
     },
-
   ];
 
   return (
-
     <div
-      className="sidebar text-white"
+      className="bg-dark text-white"
       style={{
-        width: collapse ? "80px" : "260px",
+        width: "250px",
+        minHeight: "100vh",
       }}
     >
-
-      <div className="text-center py-3">
-
-        <button
-          className="btn btn-light"
-          onClick={() => setCollapse(!collapse)}
-        >
-          <FaBars />
-        </button>
-
+      <div className="p-4 text-center border-bottom">
+        <h3 className="fw-bold text-info">
+          MediGuardian AI
+        </h3>
+        <small>Medicine Management</small>
       </div>
 
-      {
-
-        menus.map((menu) => (
-
-          <NavLink
-            key={menu.path}
-            to={menu.path}
-            className={({ isActive }) =>
-              `d-flex align-items-center p-3 text-white ${
-                isActive ? "bg-primary" : ""
-              }`
-            }
-          >
-
-            <span style={{ fontSize: 22 }}>
-              {menu.icon}
-            </span>
-
-            {!collapse && (
-
-              <span className="ms-3">
-                {menu.title}
+      <ul className="nav flex-column p-3">
+        {menuItems.map((item) => (
+          <li className="nav-item mb-2" key={item.path}>
+            <NavLink
+              to={item.path}
+              className={({ isActive }) =>
+                `nav-link rounded d-flex align-items-center ${
+                  isActive
+                    ? "bg-primary text-white"
+                    : "text-light"
+                }`
+              }
+            >
+              <span className="me-3 fs-5">
+                {item.icon}
               </span>
 
-            )}
+              {item.title}
+            </NavLink>
+          </li>
+        ))}
+      </ul>
 
-          </NavLink>
-
-        ))
-
-      }
-
+      <div className="mt-auto p-3 border-top">
+        <NavLink
+          to="/login"
+          className="btn btn-danger w-100"
+        >
+          <FaSignOutAlt className="me-2" />
+          Logout
+        </NavLink>
+      </div>
     </div>
-
   );
 }
 
