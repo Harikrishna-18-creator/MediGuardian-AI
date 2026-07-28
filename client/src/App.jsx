@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Medicines from "./pages/Medicines";
+import AddMedicine from "./pages/AddMedicine";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 import QRCodePage from "./pages/QRCodePage";
@@ -12,20 +13,62 @@ import AIPrediction from "./pages/AIPrediction";
 function App() {
   return (
     <BrowserRouter>
+
       <Routes>
-        {/* Default Route */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
 
-        {/* Authentication */}
-        <Route path="/login" element={<Login />} />
+        {/* Default */}
+        <Route
+          path="/"
+          element={<Navigate to="/login" replace />}
+        />
 
-        {/* Main Pages */}
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/medicines" element={<Medicines />} />
-        <Route path="/reports" element={<Reports />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/qrcode" element={<QRCodePage />} />
-        <Route path="/prediction" element={<AIPrediction />} />
+        {/* Login */}
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+
+        {/* Dashboard */}
+        <Route
+          path="/dashboard"
+          element={<Dashboard />}
+        />
+
+        {/* Medicines */}
+        <Route
+          path="/medicines"
+          element={<Medicines />}
+        />
+
+        {/* Add Medicine */}
+        <Route
+          path="/add"
+          element={<AddMedicine />}
+        />
+
+        {/* Reports */}
+        <Route
+          path="/reports"
+          element={<Reports />}
+        />
+
+        {/* Settings */}
+        <Route
+          path="/settings"
+          element={<Settings />}
+        />
+
+        {/* QR Code */}
+        <Route
+          path="/qrcode"
+          element={<QRCodePage />}
+        />
+
+        {/* AI Prediction */}
+        <Route
+          path="/prediction"
+          element={<AIPrediction />}
+        />
 
         {/* 404 */}
         <Route
@@ -37,7 +80,9 @@ function App() {
             </div>
           }
         />
+
       </Routes>
+
     </BrowserRouter>
   );
 }

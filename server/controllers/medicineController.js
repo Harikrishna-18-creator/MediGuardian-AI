@@ -57,9 +57,63 @@ const getMedicineById = (req, res) => {
 };
 
 // ==============================
-// Add Medicine
+// Add Medicine (Server Validation)
 // ==============================
 const addMedicine = (req, res) => {
+
+    const {
+        medicine_name,
+        category,
+        batch_no,
+        quantity,
+        reorder_level,
+        purchase_date,
+        expiry_date,
+        price,
+        manufacturer
+    } = req.body;
+
+    if (!medicine_name || medicine_name.trim() === "") {
+        return res.status(400).json({
+            success: false,
+            message: "Medicine Name cannot be empty."
+        });
+    }
+
+    if (!category || category.trim() === "") {
+        return res.status(400).json({
+            success: false,
+            message: "Category is required."
+        });
+    }
+
+    if (!batch_no || batch_no.trim() === "") {
+        return res.status(400).json({
+            success: false,
+            message: "Batch Number is required."
+        });
+    }
+
+    if (!quantity || Number(quantity) <= 0) {
+        return res.status(400).json({
+            success: false,
+            message: "Quantity must be greater than zero."
+        });
+    }
+
+    if (!expiry_date) {
+        return res.status(400).json({
+            success: false,
+            message: "Expiry Date is required."
+        });
+    }
+
+    if (!price || Number(price) <= 0) {
+        return res.status(400).json({
+            success: false,
+            message: "Price must be greater than zero."
+        });
+    }
 
     Medicine.addMedicine(req.body, (err, result) => {
 
@@ -134,7 +188,7 @@ const deleteMedicine = (req, res) => {
 // ==============================
 const searchMedicines = (req, res) => {
 
-    const keyword = req.query.keyword;
+    const keyword = req.query.keyword || "";
 
     Medicine.searchMedicines(keyword, (err, results) => {
 
@@ -147,6 +201,7 @@ const searchMedicines = (req, res) => {
 
         res.status(200).json({
             success: true,
+            count: results.length,
             data: results
         });
 
@@ -224,7 +279,7 @@ const getDashboardStats = (req, res) => {
 };
 
 // ==============================
-// Export All Controllers
+// Export
 // ==============================
 module.exports = {
     getAllMedicines,

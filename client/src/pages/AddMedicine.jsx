@@ -17,6 +17,7 @@ function AddMedicine() {
     price: "",
     quantity: "",
     reorder_level: "",
+    purchase_date: "",
     expiry_date: "",
   });
 
@@ -31,14 +32,17 @@ function AddMedicine() {
     e.preventDefault();
 
     try {
-      await API.post("/medicines", formData);
+      const res = await API.post("/medicines", formData);
 
-      toast.success("Medicine Added Successfully");
+      toast.success(res.data.message || "Medicine Added Successfully");
 
       navigate("/medicines");
     } catch (error) {
       console.log(error);
-      toast.error("Failed to add medicine");
+
+      toast.error(
+        error.response?.data?.message || "Failed to add medicine"
+      );
     }
   };
 
@@ -52,10 +56,10 @@ function AddMedicine() {
         <div className="container-fluid p-4">
 
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
           >
+
             <div className="card shadow">
 
               <div className="card-body">
@@ -79,11 +83,12 @@ function AddMedicine() {
                         name="medicine_name"
                         value={formData.medicine_name}
                         onChange={handleChange}
-                        required
+                        placeholder="Enter Medicine Name"
                       />
                     </div>
 
                     <div className="col-md-6 mb-3">
+
                       <label className="form-label">
                         Category
                       </label>
@@ -93,32 +98,33 @@ function AddMedicine() {
                         name="category"
                         value={formData.category}
                         onChange={handleChange}
-                        required
                       >
                         <option value="">
                           Select Category
                         </option>
 
-                        <option>
+                        <option value="Tablet">
                           Tablet
                         </option>
 
-                        <option>
+                        <option value="Capsule">
                           Capsule
                         </option>
 
-                        <option>
-                          Syrup
-                        </option>
-
-                        <option>
+                        <option value="Injection">
                           Injection
                         </option>
 
+                        <option value="Syrup">
+                          Syrup
+                        </option>
+
                       </select>
+
                     </div>
 
                     <div className="col-md-6 mb-3">
+
                       <label className="form-label">
                         Batch Number
                       </label>
@@ -129,11 +135,13 @@ function AddMedicine() {
                         name="batch_no"
                         value={formData.batch_no}
                         onChange={handleChange}
-                        required
+                        placeholder="Batch Number"
                       />
+
                     </div>
 
                     <div className="col-md-6 mb-3">
+
                       <label className="form-label">
                         Manufacturer
                       </label>
@@ -144,11 +152,13 @@ function AddMedicine() {
                         name="manufacturer"
                         value={formData.manufacturer}
                         onChange={handleChange}
-                        required
+                        placeholder="Manufacturer"
                       />
+
                     </div>
 
                     <div className="col-md-4 mb-3">
+
                       <label className="form-label">
                         Price
                       </label>
@@ -159,11 +169,12 @@ function AddMedicine() {
                         name="price"
                         value={formData.price}
                         onChange={handleChange}
-                        required
                       />
+
                     </div>
 
                     <div className="col-md-4 mb-3">
+
                       <label className="form-label">
                         Quantity
                       </label>
@@ -174,11 +185,12 @@ function AddMedicine() {
                         name="quantity"
                         value={formData.quantity}
                         onChange={handleChange}
-                        required
                       />
+
                     </div>
 
                     <div className="col-md-4 mb-3">
+
                       <label className="form-label">
                         Reorder Level
                       </label>
@@ -189,11 +201,28 @@ function AddMedicine() {
                         name="reorder_level"
                         value={formData.reorder_level}
                         onChange={handleChange}
-                        required
                       />
+
                     </div>
 
-                    <div className="col-md-6 mb-4">
+                    <div className="col-md-6 mb-3">
+
+                      <label className="form-label">
+                        Purchase Date
+                      </label>
+
+                      <input
+                        type="date"
+                        className="form-control"
+                        name="purchase_date"
+                        value={formData.purchase_date}
+                        onChange={handleChange}
+                      />
+
+                    </div>
+
+                    <div className="col-md-6 mb-3">
+
                       <label className="form-label">
                         Expiry Date
                       </label>
@@ -204,8 +233,8 @@ function AddMedicine() {
                         name="expiry_date"
                         value={formData.expiry_date}
                         onChange={handleChange}
-                        required
                       />
+
                     </div>
 
                   </div>
@@ -219,7 +248,7 @@ function AddMedicine() {
 
                   <button
                     type="button"
-                    className="btn btn-secondary ms-3"
+                    className="btn btn-secondary ms-2"
                     onClick={() => navigate("/medicines")}
                   >
                     Cancel

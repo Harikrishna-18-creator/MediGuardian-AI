@@ -17,9 +17,19 @@ function Medicines() {
     fetchMedicines();
   }, []);
 
-  const fetchMedicines = async () => {
+  // ==============================
+  // Fetch Medicines
+  // ==============================
+  const fetchMedicines = async (keyword = "") => {
     try {
-      const res = await API.get("/medicines");
+      let url = "/medicines";
+
+      if (keyword.trim() !== "") {
+        url = `/medicines/search?keyword=${keyword}`;
+      }
+
+      const res = await API.get(url);
+
       setMedicines(res.data.data || []);
     } catch (err) {
       console.log(err);
@@ -28,32 +38,29 @@ function Medicines() {
     }
   };
 
+  // ==============================
+  // Delete Medicine
+  // ==============================
   const deleteMedicine = async (id) => {
     if (!window.confirm("Delete this medicine?")) return;
 
     try {
       await API.delete(`/medicines/${id}`);
-      fetchMedicines();
+      fetchMedicines(search);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const filteredMedicines = medicines.filter((medicine) => {
-    const matchesSearch =
-      medicine.medicine_name
-        ?.toLowerCase()
-        .includes(search.toLowerCase()) ||
-      medicine.category
-        ?.toLowerCase()
-        .includes(search.toLowerCase());
-
-    const matchesCategory =
-      category === "" ||
-      medicine.category === category;
-
-    return matchesSearch && matchesCategory;
-  });
+  // ==============================
+  // Category Filter
+  // ==============================
+  const displayedMedicines =
+    category === ""
+      ? medicines
+      : medicines.filter(
+          (medicine) => medicine.category === category
+        );
 
   if (loading) {
     return <Loader />;
@@ -72,6 +79,7 @@ function Medicines() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
+
             <div className="d-flex justify-content-between align-items-center mb-4">
 
               <h2 className="fw-bold">
@@ -96,9 +104,10 @@ function Medicines() {
                   className="form-control"
                   placeholder="Search Medicine..."
                   value={search}
-                  onChange={(e) =>
-                    setSearch(e.target.value)
-                  }
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                    fetchMedicines(e.target.value);
+                  }}
                 />
 
               </div>
@@ -112,6 +121,7 @@ function Medicines() {
                     setCategory(e.target.value)
                   }
                 >
+
                   <option value="">
                     All Categories
                   </option>
@@ -139,7 +149,7 @@ function Medicines() {
             </div>
 
             <MedicineTable
-              medicines={filteredMedicines}
+              medicines={displayedMedicines}
               deleteMedicine={deleteMedicine}
             />
 
@@ -148,6 +158,7 @@ function Medicines() {
         </div>
 
       </div>
+
     </>
   );
 }
